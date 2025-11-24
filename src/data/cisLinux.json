@@ -1,0 +1,111 @@
+[
+  {
+    "id": "1.1.1",
+    "title": "Ensure mounting of cramfs filesystems is disabled",
+    "description": "The cramfs filesystem is a compressed read-only Linux filesystem. Disabling it reduces attack surface.",
+    "check_command": "modprobe -n -v cramfs 2>&1",
+    "expected": "install /bin/true",
+    "comparison_type": "contains",
+    "severity": "low",
+    "category": "Filesystem Configuration"
+  },
+  {
+    "id": "1.3.1",
+    "title": "Ensure sudo is installed",
+    "description": "sudo allows system administrators to delegate authority.",
+    "check_command": "command -v sudo && echo 'installed' || echo 'not installed'",
+    "expected": "installed",
+    "comparison_type": "contains",
+    "severity": "high",
+    "category": "Access Control"
+  },
+  {
+    "id": "5.2.1",
+    "title": "Ensure permissions on /etc/ssh/sshd_config are configured",
+    "description": "SSH config file should have restrictive permissions (600 or 644).",
+    "check_command": "stat -L -c '%a %n' /etc/ssh/sshd_config 2>/dev/null || echo 'file not found'",
+    "expected": "600",
+    "comparison_type": "contains",
+    "severity": "medium",
+    "category": "SSH Configuration"
+  },
+  {
+    "id": "5.2.4",
+    "title": "Ensure SSH Protocol is set to 2",
+    "description": "SSH Protocol 2 is more secure than Protocol 1.",
+    "check_command": "grep -i '^Protocol' /etc/ssh/sshd_config 2>/dev/null || echo 'not configured'",
+    "expected": "Protocol 2",
+    "comparison_type": "contains",
+    "severity": "high",
+    "category": "SSH Configuration"
+  },
+  {
+    "id": "3.1.1",
+    "title": "Ensure IP forwarding is disabled",
+    "description": "IP forwarding should be disabled on systems that are not routers.",
+    "check_command": "sysctl net.ipv4.ip_forward 2>/dev/null | awk '{print $3}' || echo 'unknown'",
+    "expected": "0",
+    "comparison_type": "exact",
+    "severity": "medium",
+    "category": "Network Configuration"
+  },
+  {
+    "id": "6.1.2",
+    "title": "Ensure permissions on /etc/passwd are configured",
+    "description": "The /etc/passwd file contains user account information.",
+    "check_command": "stat -L -c '%a' /etc/passwd 2>/dev/null || echo 'error'",
+    "expected": "644",
+    "comparison_type": "exact",
+    "severity": "high",
+    "category": "File Permissions"
+  },
+  {
+    "id": "6.1.3",
+    "title": "Ensure permissions on /etc/shadow are configured",
+    "description": "The /etc/shadow file contains password hashes.",
+    "check_command": "stat -L -c '%a' /etc/shadow 2>/dev/null || echo 'error'",
+    "expected": "000",
+    "comparison_type": "contains",
+    "severity": "critical",
+    "category": "File Permissions"
+  },
+  {
+    "id": "1.4.1",
+    "title": "Ensure bootloader password is set",
+    "description": "Setting a boot loader password prevents unauthorized boot parameter modification.",
+    "check_command": "grep -i '^password' /boot/grub/grub.cfg 2>/dev/null || grep -i '^password' /boot/grub2/grub.cfg 2>/dev/null || echo 'not set'",
+    "expected": "password",
+    "comparison_type": "contains",
+    "severity": "medium",
+    "category": "Boot Configuration"
+  },
+  {
+    "id": "2.1.1",
+    "title": "Ensure xinetd is not installed",
+    "description": "xinetd is a legacy service that should be removed.",
+    "check_command": "dpkg -l | grep xinetd 2>/dev/null || rpm -q xinetd 2>/dev/null || echo 'not installed'",
+    "expected": "not installed",
+    "comparison_type": "contains",
+    "severity": "medium",
+    "category": "Service Configuration"
+  },
+  {
+    "id": "4.1.1",
+    "title": "Ensure auditing is enabled",
+    "description": "auditd provides system auditing capabilities.",
+    "check_command": "systemctl is-enabled auditd 2>/dev/null || service auditd status 2>/dev/null | grep -i 'active\\|running' || echo 'not enabled'",
+    "expected": "enabled",
+    "comparison_type": "contains",
+    "severity": "high",
+    "category": "Auditing"
+  },
+  {
+  "id": "TEST-CPU",
+  "title": "Check CPU Vendor",
+  "severity": "low",
+  "check_command": "lscpu | grep 'Vendor ID'",
+  "expected": "",
+  "comparison_type": "not_empty"
+}
+
+]

@@ -1,0 +1,102 @@
+[
+  {
+    "id": "2.3.1.1",
+    "title": "Ensure 'Accounts: Administrator account status' is set to 'Disabled'",
+    "description": "The built-in Administrator account should be disabled to prevent unauthorized access.",
+    "check_command": "(Get-LocalUser -Name 'Administrator' -ErrorAction SilentlyContinue).Enabled",
+    "expected": "False",
+    "comparison_type": "exact",
+    "severity": "high",
+    "category": "Account Management"
+  },
+  {
+    "id": "2.3.1.4",
+    "title": "Ensure 'Accounts: Guest account status' is set to 'Disabled'",
+    "description": "The Guest account should be disabled.",
+    "check_command": "(Get-LocalUser -Name 'Guest' -ErrorAction SilentlyContinue).Enabled",
+    "expected": "False",
+    "comparison_type": "exact",
+    "severity": "high",
+    "category": "Account Management"
+  },
+  {
+    "id": "9.1.1",
+    "title": "Ensure Windows Firewall: Domain Profile is enabled",
+    "description": "Windows Firewall should be enabled for the Domain profile.",
+    "check_command": "(Get-NetFirewallProfile -Profile Domain).Enabled",
+    "expected": "True",
+    "comparison_type": "exact",
+    "severity": "high",
+    "category": "Firewall"
+  },
+  {
+    "id": "9.2.1",
+    "title": "Ensure Windows Firewall: Private Profile is enabled",
+    "description": "Windows Firewall should be enabled for the Private profile.",
+    "check_command": "(Get-NetFirewallProfile -Profile Private).Enabled",
+    "expected": "True",
+    "comparison_type": "exact",
+    "severity": "high",
+    "category": "Firewall"
+  },
+  {
+    "id": "9.3.1",
+    "title": "Ensure Windows Firewall: Public Profile is enabled",
+    "description": "Windows Firewall should be enabled for the Public profile.",
+    "check_command": "(Get-NetFirewallProfile -Profile Public).Enabled",
+    "expected": "True",
+    "comparison_type": "exact",
+    "severity": "high",
+    "category": "Firewall"
+  },
+  {
+    "id": "18.9.8.1",
+    "title": "Ensure 'Include command line in process creation events' is enabled",
+    "description": "Command line audit logging helps with forensic investigation.",
+    "check_command": "(Get-ItemProperty -Path 'HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\Audit' -Name 'ProcessCreationIncludeCmdLine_Enabled' -ErrorAction SilentlyContinue).ProcessCreationIncludeCmdLine_Enabled",
+    "expected": "1",
+    "comparison_type": "exact",
+    "severity": "medium",
+    "category": "Auditing"
+  },
+  {
+    "id": "2.2.1",
+    "title": "Ensure 'Access this computer from the network' is configured",
+    "description": "This setting determines which users can connect to the computer from the network.",
+    "check_command": "secedit /export /cfg $env:TEMP\\secedit.txt /quiet; Select-String -Path $env:TEMP\\secedit.txt -Pattern 'SeNetworkLogonRight' | Select-Object -First 1",
+    "expected": "SeNetworkLogonRight",
+    "comparison_type": "contains",
+    "severity": "medium",
+    "category": "User Rights Assignment"
+  },
+  {
+    "id": "18.9.30.2",
+    "title": "Ensure BitLocker uses appropriate encryption method",
+    "description": "BitLocker should use strong encryption.",
+    "check_command": "(Get-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\FVE' -Name 'EncryptionMethod' -ErrorAction SilentlyContinue).EncryptionMethod",
+    "expected": "3",
+    "comparison_type": "contains",
+    "severity": "medium",
+    "category": "Encryption"
+  },
+  {
+    "id": "5.1",
+    "title": "Ensure 'Print Spooler' service is disabled",
+    "description": "The Print Spooler service should be disabled if not needed to prevent PrintNightmare exploits.",
+    "check_command": "(Get-Service -Name 'Spooler' -ErrorAction SilentlyContinue).Status",
+    "expected": "Stopped",
+    "comparison_type": "contains",
+    "severity": "high",
+    "category": "Service Configuration"
+  },
+  {
+    "id": "18.8.3.1",
+    "title": "Ensure 'Enable RDP' is set correctly",
+    "description": "Remote Desktop should be disabled if not required.",
+    "check_command": "(Get-ItemProperty -Path 'HKLM:\\System\\CurrentControlSet\\Control\\Terminal Server' -Name 'fDenyTSConnections' -ErrorAction SilentlyContinue).fDenyTSConnections",
+    "expected": "1",
+    "comparison_type": "exact",
+    "severity": "high",
+    "category": "Remote Access"
+  }
+]
