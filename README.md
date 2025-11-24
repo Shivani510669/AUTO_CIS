@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AutoCIS Guard 🛡️
 
 AI-Powered CIS Benchmark Compliance & Auto-Remediation Tool
@@ -57,3 +58,7 @@ MIT License - See LICENSE file
 ## Author
 
 Your Name - 2024
+=======
+# AUTO_CIS
+AutoCISGuard is an automated CIS Benchmark auditing and hardening tool that scans system configs, detects compliance gaps, and enables AI-generated fixes using platform-specific PowerShell/Bash collectors
+>>>>>>> dc79921a8d72f09acf08f0971625d7ff972a8750
